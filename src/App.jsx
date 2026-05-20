@@ -14,6 +14,7 @@ const initialState = {
   loanAmount: "",
   balance: 0,
   status: "createAccount",
+  userAction: "",
   buttonStatus: false,
 };
 
@@ -50,6 +51,8 @@ const reducer = (state, action) => {
         NIN: "",
         buttonStatus: false,
       };
+    case "DEPOSITFORM":
+      return { ...state, userAction: "depositForm" };
     default:
       throw new Error("No Valid Operation");
   }
@@ -57,8 +60,16 @@ const reducer = (state, action) => {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, fullName, phoneNumber, NIN, balance, account, buttonStatus } =
-    state;
+  const {
+    status,
+    userAction,
+    fullName,
+    phoneNumber,
+    NIN,
+    balance,
+    account,
+    buttonStatus,
+  } = state;
 
   function handleFullName(e) {
     const fullName = e.target.value;
@@ -105,6 +116,10 @@ function App() {
     }
   }
 
+  function handleDepositForm() {
+    dispatch({ type: "depositForm" });
+  }
+
   return (
     <>
       {status === "createAccount" && (
@@ -121,7 +136,11 @@ function App() {
         ></CreateAccount>
       )}
       {status === "dashboardProfile" && (
-        <Dashboard account={account}></Dashboard>
+        <Dashboard
+          account={account}
+          userAction={userAction}
+          handleDepositForm={handleDepositForm}
+        ></Dashboard>
       )}
 
       {/* <section>

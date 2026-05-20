@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import CreateAccount from "./components/CreateAccount";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
@@ -53,6 +53,10 @@ const reducer = (state, action) => {
       };
     case "DEPOSITFORM":
       return { ...state, userAction: "depositForm" };
+    case "WITHDRAWALFORM":
+      return { ...state, userAction: "withdrawalForm" };
+    case "LOANREQUESTFORM":
+      return { ...state, userAction: "loanRequestForm" };
     default:
       throw new Error("No Valid Operation");
   }
@@ -116,8 +120,20 @@ function App() {
     }
   }
 
-  function handleDepositForm() {
-    dispatch({ type: "depositForm" });
+  function handleAccountAction(action) {
+    switch (action.toUpperCase()) {
+      case "DEPOSIT":
+        dispatch({ type: "depositForm" });
+        break;
+      case "WITHDRAW":
+        dispatch({ type: "withdrawalForm" });
+        break;
+      case "LOANREQUEST":
+        dispatch({ type: "loanRequestForm" });
+        break;
+      default:
+        return "none";
+    }
   }
 
   return (
@@ -139,7 +155,7 @@ function App() {
         <Dashboard
           account={account}
           userAction={userAction}
-          handleDepositForm={handleDepositForm}
+          handleAccountAction={handleAccountAction}
         ></Dashboard>
       )}
 

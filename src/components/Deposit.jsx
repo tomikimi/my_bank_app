@@ -1,6 +1,6 @@
 function Deposit() {
   return (
-    <div className="deposit-container">
+    <div className="account-action-container">
       <div className="action-input-container">
         <label
           name="deposit_amount"

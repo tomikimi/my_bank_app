@@ -1,4 +1,5 @@
 import Deposit from "./Deposit";
+import LoanPayment from "./LoanPayment";
 import LoanRequest from "./LoanRequest";
 import Withdrawal from "./Withdrawal";
 
@@ -34,13 +35,19 @@ function Dashboard({ account, userAction, handleAccountAction }) {
             >
               Get a Loan
             </button>
-            <button className="btn btn-action">Pay Loan</button>
+            <button
+              className="btn btn-action"
+              onClick={() => handleAccountAction("loanPayment")}
+            >
+              Pay Loan
+            </button>
             <button className="btn btn-action">Close Account</button>
           </div>
         </div>
         {userAction === "depositForm" && <Deposit></Deposit>}
         {userAction === "withdrawalForm" && <Withdrawal></Withdrawal>}
         {userAction === "loanRequestForm" && <LoanRequest></LoanRequest>}
+        {userAction === "loanPaymentForm" && <LoanPayment></LoanPayment>}
       </div>
     </section>
   );

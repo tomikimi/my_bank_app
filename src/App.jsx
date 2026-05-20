@@ -57,6 +57,8 @@ const reducer = (state, action) => {
       return { ...state, userAction: "withdrawalForm" };
     case "LOANREQUESTFORM":
       return { ...state, userAction: "loanRequestForm" };
+    case "LOANPAYMENTFORM":
+      return { ...state, userAction: "loanPaymentForm" };
     default:
       throw new Error("No Valid Operation");
   }
@@ -130,6 +132,9 @@ function App() {
         break;
       case "LOANREQUEST":
         dispatch({ type: "loanRequestForm" });
+        break;
+      case "LOANPAYMENT":
+        dispatch({ type: "loanPaymentForm" });
         break;
       default:
         return "none";

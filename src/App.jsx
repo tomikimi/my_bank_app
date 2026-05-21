@@ -59,6 +59,35 @@ const reducer = (state, action) => {
       return { ...state, userAction: "loanRequestForm" };
     case "LOANPAYMENTFORM":
       return { ...state, userAction: "loanPaymentForm" };
+    case "DEPOSITAMOUNT":
+      return { ...state, depositAmount: Number(action.payload) };
+    case "DEPOSIT":
+      return {
+        ...state,
+        balance: state.balance + state.depositAmount,
+        depositAmount: "",
+      };
+    case "WITHDRAWAMOUNT":
+      return { ...state, withdrawAmount: Number(action.payload) };
+    case "WITHDRAW": {
+      const amount = state.withdrawAmount;
+      const balance = state.balance;
+      if (amount > balance) {
+        window.alert(
+          `Dear ${state.fullName} you do not have sufficient balance in your Account.`,
+        );
+        return { ...state };
+      } else {
+        return {
+          ...state,
+          balance: state.balance - state.withdrawAmount,
+          withdrawAmount: "",
+        };
+      }
+    }
+
+    case "CLOSEACCOUNT":
+      return initialState;
     default:
       throw new Error("No Valid Operation");
   }
@@ -74,6 +103,8 @@ function App() {
     NIN,
     balance,
     account,
+    depositAmount,
+    withdrawAmount,
     buttonStatus,
   } = state;
 
@@ -136,8 +167,53 @@ function App() {
       case "LOANPAYMENT":
         dispatch({ type: "loanPaymentForm" });
         break;
+      case "CLOSEACCOUNT":
+        {
+          const confirm = window.confirm(
+            `Dear ${fullName} are you sure you want to close your account.`,
+          );
+
+          if (confirm) {
+            dispatch({ type: "closeAccount" });
+          }
+        }
+        break;
       default:
         return "none";
+    }
+  }
+
+  function handleDeposit(e) {
+    const amount = e.target.value;
+
+    dispatch({ type: "depositAmount", payload: amount });
+  }
+
+  function handleWithdraw(e) {
+    const amount = e.target.value;
+
+    dispatch({ type: "withdrawAmount", payload: amount });
+  }
+
+  function handleDepositAction() {
+    const confirm = window.confirm(
+      `Dear ${fullName} would you like to proceed in depositing ${depositAmount} Naira into your Account.`,
+    );
+    if (confirm) {
+      dispatch({ type: "deposit" });
+    } else {
+      return;
+    }
+  }
+
+  function handleWithdrawAction() {
+    const confirm = window.confirm(
+      `Dear ${fullName} would you like to proceed in withdrawing ${withdrawAmount} Naira from your Account.`,
+    );
+    if (confirm) {
+      dispatch({ type: "withdraw" });
+    } else {
+      return;
     }
   }
 
@@ -159,8 +235,15 @@ function App() {
       {status === "dashboardProfile" && (
         <Dashboard
           account={account}
+          balance={balance}
           userAction={userAction}
           handleAccountAction={handleAccountAction}
+          depositAmount={depositAmount}
+          withdrawAmount={withdrawAmount}
+          handleDeposit={handleDeposit}
+          handleDepositAction={handleDepositAction}
+          handleWithdraw={handleWithdraw}
+          handleWithdrawAction={handleWithdrawAction}
         ></Dashboard>
       )}
 

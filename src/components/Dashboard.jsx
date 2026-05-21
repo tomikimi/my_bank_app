@@ -3,9 +3,19 @@ import LoanPayment from "./LoanPayment";
 import LoanRequest from "./LoanRequest";
 import Withdrawal from "./Withdrawal";
 
-function Dashboard({ account, userAction, handleAccountAction }) {
-  const { fullName, balance } = account[0];
-  console.log(balance);
+function Dashboard({
+  account,
+  balance,
+  userAction,
+  handleAccountAction,
+  depositAmount,
+  withdrawAmount,
+  handleDeposit,
+  handleDepositAction,
+  handleWithdraw,
+  handleWithdrawAction,
+}) {
+  const { fullName } = account[0];
   return (
     <section className="container">
       <div className="container-div">
@@ -41,11 +51,28 @@ function Dashboard({ account, userAction, handleAccountAction }) {
             >
               Pay Loan
             </button>
-            <button className="btn btn-action">Close Account</button>
+            <button
+              className="btn btn-action"
+              onClick={() => handleAccountAction("closeAccount")}
+            >
+              Close Account
+            </button>
           </div>
         </div>
-        {userAction === "depositForm" && <Deposit></Deposit>}
-        {userAction === "withdrawalForm" && <Withdrawal></Withdrawal>}
+        {userAction === "depositForm" && (
+          <Deposit
+            depositAmount={depositAmount}
+            handleDeposit={handleDeposit}
+            handleDepositAction={handleDepositAction}
+          ></Deposit>
+        )}
+        {userAction === "withdrawalForm" && (
+          <Withdrawal
+            withdrawAmount={withdrawAmount}
+            handleWithdraw={handleWithdraw}
+            handleWithdrawAction={handleWithdrawAction}
+          ></Withdrawal>
+        )}
         {userAction === "loanRequestForm" && <LoanRequest></LoanRequest>}
         {userAction === "loanPaymentForm" && <LoanPayment></LoanPayment>}
       </div>
